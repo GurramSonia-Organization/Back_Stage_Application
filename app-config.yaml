@@ -27,9 +27,28 @@ backend:
     credentials: true
   # This is for local development only, it is not recommended to use this in production
   # The production database configuration is stored in app-config.production.yaml
+
   database:
-    client: better-sqlite3
-    connection: ':memory:'
+    # client: better-sqlite3
+    # connection: ':memory:'
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+  
+#WE can use above one or this one for local development, but for production use the above one and set the environment variables in app-config.production.yaml
+  # database:
+  #   client: pg
+  #   connection:
+  #     host: localhost
+  #     port: 5432
+  #     user: backstage
+  #     password: backstage123
+  #     database: backstage
+      
+
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
 integrations:
@@ -103,6 +122,14 @@ catalog:
       target: ../../examples/org.yaml
       rules:
         - allow: [User, Group]
+  providers:
+    github:
+      gurram-provider:
+        organization: GurramSonia-Organization
+        catalogPath: /catalog-info.yaml
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
 
     ## Uncomment these lines to add more example data
     # - type: url
@@ -113,6 +140,15 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+
+
+
+  
+
+
+
+
+
 
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
