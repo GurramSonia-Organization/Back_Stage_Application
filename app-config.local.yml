@@ -1,7 +1,7 @@
 integrations:
   github:
     - host: github.com
-      token: ${GITHUB_TOKEN}
+      token: ${BACKSTAGE_TOKEN}
     
       
        # this should be the token from GitHub
