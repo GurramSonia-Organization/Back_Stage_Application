@@ -1,0 +1,6 @@
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
+      
+       # this should be the token from GitHub
