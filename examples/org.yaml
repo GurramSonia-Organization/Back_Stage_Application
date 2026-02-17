@@ -3,7 +3,8 @@
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
-  name: ${GITHUB_USERNAME}
+  #name: ${GITHUB_USERNAME}
+  name: GurramSonia
  
   #name: guest
 # spec:
