@@ -3,7 +3,7 @@ name: Backstage CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ feature2 ]
   pull_request:
     branches: [ main ]
 
