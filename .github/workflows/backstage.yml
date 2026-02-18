@@ -56,7 +56,7 @@ jobs:
      
       - name: Build Docker image
         run: |
-            USERNAME="${{ secrets.DOCKERHUB_USERNAME }}"
+            USERNAME="${{ secrets.DOCKER_USERNAME }}"
             IMAGE_NAME="${{ env.IMAGE_NAME }}"
             TAG="${{ github.sha }}"
             IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
@@ -65,7 +65,7 @@ jobs:
         
       - name: Push Docker image
         run: |
-            USERNAME="${{ secrets.DOCKERHUB_USERNAME }}"
+            USERNAME="${{ secrets.DOCKER_USERNAME }}"
             IMAGE_NAME="${{ env.IMAGE_NAME }}"
             TAG="${{ github.sha }}"
             IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
