@@ -9,8 +9,7 @@ env:
   IMAGE_NAME: backstage
 
 jobs:
-  #small chanege to test workflow
-  #2nd small change to test workflow
+
   # -----------------------------
   # JOB 1 — Build & Push Image
   # -----------------------------

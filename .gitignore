@@ -54,3 +54,5 @@ e2e-test-report/
 
 # Cache
 .cache/
+kubernetes/backstage-secrets.yaml
+kubernetes/postgres-secrets.yaml
