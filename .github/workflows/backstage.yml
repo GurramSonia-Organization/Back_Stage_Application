@@ -85,17 +85,17 @@ jobs:
 
       - name: Configure kubeconfig
         run: |
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig
-          export KUBECONFIG=$PWD/kubeconfig
-
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $C:\Users\sonia\.kube\config
+          
+      - name: Verify cluster access
+        run: kubectl get nodes
+        
       - name: Deploy new image
         run: |
-          export KUBECONFIG=$PWD/kubeconfig
           kubectl set image deployment/backstage \
-            backstage=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            backstage=${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
             -n backstage
 
       - name: Verify rollout
         run: |
-          export KUBECONFIG=$PWD/kubeconfig
           kubectl rollout status deployment/backstage -n backstage
