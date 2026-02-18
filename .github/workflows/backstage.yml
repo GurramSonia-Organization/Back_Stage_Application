@@ -1,77 +1,85 @@
-#sample code small chaneges for github actions workflow
-name: Backstage CI
+name: Backstage CI/CD
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: backstage
 
 jobs:
-  build:
+
+  # -----------------------------
+  # JOB 1 — Build & Push Image
+  # -----------------------------
+  build-and-push:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20]
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tag }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
+          node-version: 24
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Lint
-        run: yarn lint
+      - name: Build backend
+        run: yarn build:backend
 
-      - name: Run tests
-        run: yarn test --watchAll=false
-
-      - name: Build Backstage
-        run: yarn build
-    
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: backstage
-          POSTGRES_PASSWORD: backstage123
-          POSTGRES_DB: backstage
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
-  
-  docker:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Build Docker image
-        run: |
-          docker build -t backstage-app .
+      - name: Set image tag
+        id: meta
+        run: echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build . \
+            -f packages/backend/Dockerfile \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Push Docker image
         run: |
-          docker tag backstage-app ${{ secrets.DOCKER_USERNAME }}/backstage-app:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/backstage-app:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+  # -----------------------------
+  # JOB 2 — Deploy to Kubernetes
+  # -----------------------------
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build-and-push
+
+  #   steps:
+  #     - name: Setup kubectl
+  #       uses: azure/setup-kubectl@v4
+  #       with:
+  #         version: latest
+
+  #     - name: Configure kubeconfig
+  #       run: |
+  #         echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig
+  #         export KUBECONFIG=$PWD/kubeconfig
+
+  #     - name: Deploy new image
+  #       run: |
+  #         export KUBECONFIG=$PWD/kubeconfig
+  #         kubectl set image deployment/backstage \
+  #           backstage=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+  #           -n backstage
+
+  #     - name: Verify rollout
+  #       run: |
+  #         export KUBECONFIG=$PWD/kubeconfig
+  #         kubectl rollout status deployment/backstage -n backstage
