@@ -13,63 +13,67 @@ jobs:
   # -----------------------------
   # JOB 1 — Build & Push Image
   # -----------------------------
-  build-and-push:
-    runs-on: ubuntu-latest
 
-    outputs:
-      image-tag: ${{ steps.meta.outputs.tag }}
+  
+  # build-and-push:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #   outputs:
+  #     image-tag: ${{ steps.meta.outputs.tag }}
 
-      # 🔥 FORCE NODE 24
-      - name: Setup Node 24
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          check-latest: true
-          cache: 'yarn'
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Verify Node Version
-        run: node -v
+  #     # 🔥 FORCE NODE 24
+  #     - name: Setup Node 24
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '24'
+  #         check-latest: true
+  #         cache: 'yarn'
 
-      - name: Install build tools
-        run: sudo apt-get update && sudo apt-get install -y build-essential python3 make g++
+  #     - name: Verify Node Version
+  #       run: node -v
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+  #     - name: Install build tools
+  #       run: sudo apt-get update && sudo apt-get install -y build-essential python3 make g++
 
-      - name: Build backend
-        run: yarn build:backend
+  #     - name: Install dependencies
+  #       run: yarn install --frozen-lockfile
 
-      - name: Set image tag
-        id: meta
-        run: echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
+  #     - name: Build backend
+  #       run: yarn build:backend
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     - name: Set image tag
+  #       id: meta
+  #       run: echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
+
+  #     - name: Login to DockerHub
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
      
-      - name: Build Docker image
-        run: |
-            USERNAME="${{ secrets.DOCKER_USERNAME }}"
-            IMAGE_NAME="${{ env.IMAGE_NAME }}"
-            TAG="${{ github.sha }}"
-            IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
-            echo "Building image: $IMAGE"
-            docker build . -f packages/backend/Dockerfile -t "$IMAGE"
+  #     - name: Build Docker image
+  #       run: |
+  #           USERNAME="${{ secrets.DOCKER_USERNAME }}"
+  #           IMAGE_NAME="${{ env.IMAGE_NAME }}"
+  #           TAG="${{ github.sha }}"
+  #           IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
+  #           echo "Building image: $IMAGE"
+  #           docker build . -f packages/backend/Dockerfile -t "$IMAGE"
         
-      - name: Push Docker image
-        run: |
-            USERNAME="${{ secrets.DOCKER_USERNAME }}"
-            IMAGE_NAME="${{ env.IMAGE_NAME }}"
-            TAG="${{ github.sha }}"
-            IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
-            docker push "$IMAGE"
+  #     - name: Push Docker image
+  #       run: |
+  #           USERNAME="${{ secrets.DOCKER_USERNAME }}"
+  #           IMAGE_NAME="${{ env.IMAGE_NAME }}"
+  #           TAG="${{ github.sha }}"
+  #           IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
+  #           docker push "$IMAGE"
+
+  
   # -----------------------------
   # JOB 2 — Deploy to Kubernetes
   # -----------------------------
@@ -83,15 +87,37 @@ jobs:
         with:
           version: latest
 
-      - name: Configure kubeconfig
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
+      # - name: Configure kubeconfig
+      #   run: |
+      #     mkdir -p $HOME/.kube
+      #     echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
           
+      # - name: Verify cluster access
+      #   run: |
+      #        kubectl config view
+      #        kubectl get nodes
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Remove any existing kubeconfig
+       run: rm -rf $HOME/.kube
+
+      - name: Update kubeconfig for EKS
+        run: |
+          aws eks update-kubeconfig \
+          --region ${{ secrets.AWS_REGION }} \
+          --name secure-eks-cluster
+
       - name: Verify cluster access
         run: |
-             kubectl config view
-             kubectl get nodes
+          kubectl config view
+          kubectl get nodes
+
         
       - name: Deploy new image
         run: |
