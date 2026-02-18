@@ -1,6 +1,7 @@
 app:
   # Should be the same as backend.baseUrl when using the `app-backend` plugin.
-  baseUrl: http://localhost:7007
+  #baseUrl: http://localhost:7007
+  baseUrl: http://a2da9f3849a3a4892a0f6e277a3606bb-2142267926.us-east-1.elb.amazonaws.com
 
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
@@ -8,7 +9,8 @@ backend:
   # reachable not just from within the backend host, but from all of your
   # callers. When its value is "http://localhost:7007", it's strictly private
   # and can't be reached by others.
-  baseUrl: http://localhost:7007
+  #baseUrl: http://localhost:7007
+  baseUrl: http://a2da9f3849a3a4892a0f6e277a3606bb-2142267926.us-east-1.elb.amazonaws.com
   # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
   listen: ':7007'
@@ -28,28 +30,82 @@ backend:
       #   ca: # if you have a CA file and want to verify it you can uncomment this section
       #     $file: <file-path>/ca/server.crt
 
+integrations:
+  github:
+    - host: github.com
+      # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
+      # about setting up the GitHub integration here: https://backstage.io/docs/integrations/github/locations#configuration
+
+      token: ${BACKSTAGE_TOKEN}
+      
 auth:
+  # see https://backstage.io/docs/auth/ to learn about auth providers
+  environment: production
   providers:
+    # See https://backstage.io/docs/auth/guest/provider
     guest: {}
+    github:
+      development:
+        clientId: ${BACKSTAGE_CLIENT_ID}
+        clientSecret: ${BACKSTAGE_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            # Matches the GitHub username with the Backstage user entity name.
+            # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
+            - resolver: usernameMatchingUserEntityName
+            #- resolver: emailMatchingUserEntityProfileEmai
+
+# catalog:
+#   # Overrides the default list locations from app-config.yaml as these contain example data.
+#   # See https://backstage.io/docs/features/software-catalog/#adding-components-to-the-catalog for more details
+#   # on how to get entities into the catalog.
+#   locations:
+#     # Local example data, replace this with your production config, these are intended for demo use only.
+#     # File locations are relative to the backend process, typically in a deployed context, such as in a Docker container, this will be the root
+#     - type: file
+#       target: ./examples/entities.yaml
+
+#     # Local example template
+#     - type: file
+#       target: ./examples/template/template.yaml
+#       rules:
+#         - allow: [Template]
+
+#     # Local example organizational data
+#     - type: file
+#       target: ./examples/org.yaml
+#       rules:
+#         - allow: [User, Group]
+
 
 catalog:
-  # Overrides the default list locations from app-config.yaml as these contain example data.
-  # See https://backstage.io/docs/features/software-catalog/#adding-components-to-the-catalog for more details
-  # on how to get entities into the catalog.
+  import:
+    entityFilename: catalog-info.yaml
+    pullRequestBranchName: backstage-integration
+  rules:
+    - allow: [Component, System, API, Resource, Location]
   locations:
-    # Local example data, replace this with your production config, these are intended for demo use only.
-    # File locations are relative to the backend process, typically in a deployed context, such as in a Docker container, this will be the root
+    # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
-      target: ./examples/entities.yaml
+      target: ../../examples/entities.yaml
 
     # Local example template
     - type: file
-      target: ./examples/template/template.yaml
+      target: ../../examples/template/template.yaml
       rules:
         - allow: [Template]
 
     # Local example organizational data
     - type: file
-      target: ./examples/org.yaml
+      target: ../../examples/org.yaml
       rules:
         - allow: [User, Group]
+  providers:
+    github:
+      gurram-provider:
+        organization: GurramSonia-Organization
+        catalogPath: /catalog-info.yaml
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
+
