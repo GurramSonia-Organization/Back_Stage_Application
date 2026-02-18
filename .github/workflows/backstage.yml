@@ -108,6 +108,14 @@ jobs:
         run: |
           kubectl config view
           kubectl get nodes
+          
+      - name: Create namespace if not exists
+        run: |
+           kubectl get namespace backstage || kubectl create namespace backstage
+
+      - name: Apply Kubernetes manifests
+        run: |
+          kubectl apply -f kubernetes/ -n backstage
         
       - name: Deploy new image
         run: |
