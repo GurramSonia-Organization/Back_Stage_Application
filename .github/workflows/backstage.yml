@@ -122,8 +122,12 @@ jobs:
         
       - name: Deploy new image
         run: |
+          USERNAME="${{ secrets.DOCKER_USERNAME }}"
+          IMAGE_NAME="${{ env.IMAGE_NAME }}"
+          TAG="${{ github.sha }}"
+          IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
           kubectl set image deployment/backstage \
-          backstage=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+          backstage=$IMAGE \
           -n backstage
       - name: Verify rollout
         run: |
