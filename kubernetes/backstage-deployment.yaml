@@ -33,6 +33,8 @@ spec:
               value: postgres
             - name: POSTGRES_DATABASE
               value: backstage
+            - name: NODE_ENV
+              value: "production"
 
 # Uncomment if health checks are enabled in your app:
 # https://backstage.io/docs/plugins/observability#health-checks
