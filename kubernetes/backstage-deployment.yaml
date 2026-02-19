@@ -27,6 +27,12 @@ spec:
             - secretRef:
                 name: backstage-secrets
           env:
+            - name: APP_BASE_URL_FRONTEND
+              value: "https://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com"
+            - name: APP_BASE_URL_BACKEND
+              value: "https://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com"
+            - name: APP_CONFIG_auth_environment
+              value: "production"
             - name: POSTGRES_PORT
               value: "5432"
             - name: POSTGRES_HOST
