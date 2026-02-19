@@ -10,6 +10,9 @@ metadata:
 # spec:
 #   memberOf: [guests]
 spec:
+  profile:
+    displayName: Sonia Gurram
+    email: gsoni7881772@gmail.com
   memberOf: [guests]
 ---
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
