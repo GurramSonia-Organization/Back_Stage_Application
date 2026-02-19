@@ -14,16 +14,32 @@
 
 #production
 
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: backstage-service
+#   namespace: backstage
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: backstage
+#   ports:
+#     - port: 80
+#       targetPort: 7007
+#       protocol: TCP
+
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: backstage-service
+  name: backstage
   namespace: backstage
 spec:
-  type: LoadBalancer
-  selector:
-    app: backstage
+  type: NodePort # Changed from LoadBalancer
   ports:
     - port: 80
       targetPort: 7007
       protocol: TCP
+      name: http
+  selector:
+    app: backstage

@@ -14,6 +14,8 @@ backend:
   #   keys:
   #     - secret: ${BACKEND_SECRET}
   baseUrl: ${APP_BASE_URL_BACKEND}
+  auth:
+    dangerouslyDisableDefaultAuthPolicy: true # Move it here!
   #baseUrl: http://a2da9f3849a3a4892a0f6e277a3606bb-2142267926.us-east-1.elb.amazonaws.com
   listen:
     port: 7007
