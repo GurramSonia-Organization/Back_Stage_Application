@@ -1,7 +1,7 @@
 app:
   title: Scaffolded Backstage App
   #baseUrl: http://localhost:3000
-  baseUrl: ${APP_BASE_URL_FRONTEND}
+  baseUrl: https://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com
 
 organization:
   name: My Company
@@ -13,7 +13,7 @@ backend:
   # auth:
   #   keys:
   #     - secret: ${BACKEND_SECRET}
-  baseUrl: ${APP_BASE_URL_BACKEND}
+  baseUrl: https://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com
   #baseUrl: http://a2da9f3849a3a4892a0f6e277a3606bb-2142267926.us-east-1.elb.amazonaws.com
   listen:
     port: 7007
@@ -24,7 +24,7 @@ backend:
     # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
-    origin: ${APP_BASE_URL_FRONTEND}
+    origin: https://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com
     #origin: http://a2da9f3849a3a4892a0f6e277a3606bb-2142267926.us-east-1.elb.amazonaws.com
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
