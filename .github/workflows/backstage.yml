@@ -69,7 +69,7 @@ jobs:
         run: |
             USERNAME="${{ secrets.DOCKER_USERNAME }}"
             IMAGE_NAME="${{ env.IMAGE_NAME }}"
-            TAG=6
+            TAG=7
             IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
             echo "Building image: $IMAGE"
             docker build . -f packages/backend/Dockerfile -t "$IMAGE"
@@ -78,7 +78,7 @@ jobs:
         run: |
             USERNAME="${{ secrets.DOCKER_USERNAME }}"
             IMAGE_NAME="${{ env.IMAGE_NAME }}"
-            TAG=6
+            TAG=7
             IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
             docker push "$IMAGE"
 
@@ -132,7 +132,7 @@ jobs:
         run: |
           USERNAME="${{ secrets.DOCKER_USERNAME }}"
           IMAGE_NAME="${{ env.IMAGE_NAME }}"
-          TAG=6
+          TAG=7
           IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
           kubectl set image deployment/backstage \
           backstage=$IMAGE \
