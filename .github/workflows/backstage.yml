@@ -62,7 +62,7 @@ jobs:
         run: |
             USERNAME="${{ secrets.DOCKER_USERNAME }}"
             IMAGE_NAME="${{ env.IMAGE_NAME }}"
-            TAG=3
+            TAG=4
             IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
             echo "Building image: $IMAGE"
             docker build . -f packages/backend/Dockerfile -t "$IMAGE"
@@ -71,7 +71,7 @@ jobs:
         run: |
             USERNAME="${{ secrets.DOCKER_USERNAME }}"
             IMAGE_NAME="${{ env.IMAGE_NAME }}"
-            TAG=3
+            TAG=4
             IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
             docker push "$IMAGE"
 
