@@ -53,9 +53,29 @@ spec:
           envFrom:
             - secretRef:
                 name: postgres-secrets
+          env:
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_HOST
+              value: postgres
+            - name: POSTGRES_DATABASE
+              value: backstage
+            
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secrets
+                  key: POSTGRES_PASSWORD
+
           volumeMounts:
             - mountPath: /var/lib/postgresql
               name: postgresdb
+            
 
       volumes:
         - name: postgresdb
