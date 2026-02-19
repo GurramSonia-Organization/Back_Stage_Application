@@ -1,7 +1,7 @@
 app:
   # Should be the same as backend.baseUrl when using the `app-backend` plugin.
-  baseUrl: http://localhost:7007
-  #baseUrl: http://a2da9f3849a3a4892a0f6e277a3606bb-2142267926.us-east-1.elb.amazonaws.com
+  #baseUrl: http://localhost:7007
+  baseUrl: ${APP_BASE_URL_FRONTEND}
 
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
@@ -9,8 +9,7 @@ backend:
   # reachable not just from within the backend host, but from all of your
   # callers. When its value is "http://localhost:7007", it's strictly private
   # and can't be reached by others.
-  baseUrl: http://localhost:7007
-  #baseUrl: http://a2da9f3849a3a4892a0f6e277a3606bb-2142267926.us-east-1.elb.amazonaws.com
+  baseUrl: ${APP_BASE_URL_BACKEND}
   # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
   listen: ':7007'
@@ -40,8 +39,8 @@ integrations:
       
 auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
-  #environment: production
-  environment: development
+  environment: production
+  #environment: development
   
   providers:
     # See https://backstage.io/docs/auth/guest/provider

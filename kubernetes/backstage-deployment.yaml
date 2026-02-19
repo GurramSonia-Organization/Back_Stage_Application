@@ -35,6 +35,10 @@ spec:
               value: backstage
             - name: NODE_ENV
               value: "production"
+            - name: APP_BASE_URL_FRONTEND
+              value: "http://localhost:3000"
+            - name: APP_BASE_URL_BACKEND
+              value: "http://localhost:7007"
 
 # Uncomment if health checks are enabled in your app:
 # https://backstage.io/docs/plugins/observability#health-checks
