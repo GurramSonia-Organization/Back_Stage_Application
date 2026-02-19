@@ -1,4 +1,83 @@
 # kubernetes/backstage.yaml
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: backstage
+#   namespace: backstage
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: backstage
+#   template:
+#     metadata:
+#       labels:
+#         app: backstage
+#     spec:
+#       containers:
+#         - name: backstage
+#           image: backstage:1.0.0
+#           imagePullPolicy: Always
+#           ports:
+#             - name: http
+#               containerPort: 7007
+#           envFrom:
+#             - secretRef:
+#                 name: postgres-secrets
+#             - secretRef:
+#                 name: backstage-secrets
+#               # Must match the key inside your secret
+
+#             # Matches ${BACKSTAGE_CLIENT_SECRET} in your app-config
+      
+#           env:
+#              # 1. Base URLs (Matching your placeholders)
+#             - name: APP_BASE_URL_FRONTEND
+#               value: "https://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com"
+#             - name: APP_BASE_URL_BACKEND
+#               value: "https://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com"
+
+#               # 2. Config & Env Settings
+#             - name: APP_CONFIG_auth_environment
+#               value: "production"
+#             - name: NODE_ENV
+#               value: "production"
+
+#             # 3. Database Connection
+#             - name: POSTGRES_PORT
+#               value: "5432"
+#             - name: POSTGRES_HOST
+#               value: postgres
+#             - name: POSTGRES_DATABASE
+#               value: backstage
+
+#             - name: BACKSTAGE_CLIENT_ID
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: backstage-secrets
+#                   key: BACKSTAGE_CLIENT_ID
+#             - name: BACKSTAGE_CLIENT_SECRET
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: backstage-secrets
+#                   key: BACKSTAGE_CLIENT_SECRET
+#             - name: BACKSTAGE_TOKEN
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: backstage-secrets
+#                   key: BACKSTAGE_TOKEN
+#             - name: POSTGRES_USER
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: postgres-secrets
+#                   key: POSTGRES_USER
+#             - name: POSTGRES_PASSWORD
+#               valueFrom:
+#                 secretKeyRef:
+#                   name: postgres-secrets
+#                   key: POSTGRES_PASSWORD
+
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,41 +95,34 @@ spec:
     spec:
       containers:
         - name: backstage
-          image: backstage:1.0.0
+          image: soniagurramavari/backstage-production:4
           imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 7007
+          # 1. Pull all secrets automatically
           envFrom:
             - secretRef:
                 name: postgres-secrets
             - secretRef:
                 name: backstage-secrets
-              # Must match the key inside your secret
-
-            # Matches ${BACKSTAGE_CLIENT_SECRET} in your app-config
-      
+          # 2. Individual environment variables (Ensure perfect indentation)
           env:
-             # 1. Base URLs (Matching your placeholders)
             - name: APP_BASE_URL_FRONTEND
-              value: "https://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com"
+              value: "http://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com"
             - name: APP_BASE_URL_BACKEND
-              value: "https://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com"
-
-              # 2. Config & Env Settings
+              value: "http://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com"
             - name: APP_CONFIG_auth_environment
               value: "production"
             - name: NODE_ENV
               value: "production"
-
-            # 3. Database Connection
             - name: POSTGRES_PORT
               value: "5432"
             - name: POSTGRES_HOST
-              value: postgres
+              value: "postgres"
             - name: POSTGRES_DATABASE
-              value: backstage
-
+              value: "backstage"
+            # Explicit mapping for GitHub (Matches your production YAML placeholders)
             - name: BACKSTAGE_CLIENT_ID
               valueFrom:
                 secretKeyRef:
@@ -66,16 +138,6 @@ spec:
                 secretKeyRef:
                   name: backstage-secrets
                   key: BACKSTAGE_TOKEN
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secrets
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secrets
-                  key: POSTGRES_PASSWORD
 
 # Uncomment if health checks are enabled in your app:
 # https://backstage.io/docs/plugins/observability#health-checks
