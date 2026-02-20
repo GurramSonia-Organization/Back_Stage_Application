@@ -36,7 +36,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 USER node
 WORKDIR /app
+# 1. ADD THESE ARG AND ENV LINES HERE this one is added by me
+ARG APP_CONFIG_app_baseUrl
+ARG APP_CONFIG_backend_baseUrl
 
+ENV APP_CONFIG_app_baseUrl=$APP_CONFIG_app_baseUrl
+ENV APP_CONFIG_backend_baseUrl=$APP_CONFIG_backend_baseUrl
 COPY --from=packages --chown=node:node /app .
 
 RUN --mount=type=cache,target=/home/node/.cache/yarn,sharing=locked,uid=1000,gid=1000 \
