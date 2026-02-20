@@ -49,9 +49,8 @@ jobs:
       - name: Build backend
         env:
           # Matching your exact YAML placeholders
-          APP_BASE_URL_FRONTEND: http://a55a693a63c99433d8e57eb9a5e09f00-1463316766.us-east-1.elb.amazonaws.com 
-          
-          APP_BASE_URL_BACKEND: http://a55a693a63c99433d8e57eb9a5e09f00-1463316766.us-east-1.elb.amazonaws.com 
+          APP_BASE_URL_FRONTEND: http://k8s-backstag-backstag-0c08a43ce6-2140009095.us-east-1.elb.amazonaws.com
+          APP_BASE_URL_BACKEND: http://k8s-backstag-backstag-0c08a43ce6-2140009095.us-east-1.elb.amazonaws.com 
           APP_CONFIG_auth_environment: production
         run: yarn build:backend
 
@@ -70,7 +69,7 @@ jobs:
         run: |
             USERNAME="${{ secrets.DOCKER_USERNAME }}"
             IMAGE_NAME="${{ env.IMAGE_NAME }}"
-            TAG=10
+            TAG=11
             IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
             echo "Building image: $IMAGE"
             docker build . -f Dockerfile -t "$IMAGE"
@@ -79,7 +78,7 @@ jobs:
         run: |
             USERNAME="${{ secrets.DOCKER_USERNAME }}"
             IMAGE_NAME="${{ env.IMAGE_NAME }}"
-            TAG=10
+            TAG=11
             IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
             docker push "$IMAGE"
 
@@ -133,7 +132,7 @@ jobs:
         run: |
           USERNAME="${{ secrets.DOCKER_USERNAME }}"
           IMAGE_NAME="${{ env.IMAGE_NAME }}"
-          TAG=10
+          TAG=11
           IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
           kubectl set image deployment/backstage \
           backstage=$IMAGE \
