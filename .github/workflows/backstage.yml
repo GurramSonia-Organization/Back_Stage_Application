@@ -69,13 +69,13 @@ jobs:
         run: |
             USERNAME="${{ secrets.DOCKER_USERNAME }}"
             IMAGE_NAME="${{ env.IMAGE_NAME }}"
-            TAG=13
+            TAG=14
             IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
             echo "Building image: $IMAGE"
            
             docker build \
-            --build-arg APP_CONFIG_app_baseUrl=http://k8s-backstag-backstag-0c08a43ce6-2140009095.us-east-1.elb.amazonaws.com:7007 \
-            --build-arg APP_CONFIG_backend_baseUrl=http://k8s-backstag-backstag-0c08a43ce6-2140009095.us-east-1.elb.amazonaws.com:7007 \
+            --build-arg APP_CONFIG_app_baseUrl=http://k8s-backstag-backstag-0c08a43ce6-2140009095.us-east-1.elb.amazonaws.com \
+            --build-arg APP_CONFIG_backend_baseUrl=http://k8s-backstag-backstag-0c08a43ce6-2140009095.us-east-1.elb.amazonaws.com \
             -t "$IMAGE" .
       #docker build . -f Dockerfile -t "$IMAGE"
       #docker build . -f packages/backend/Dockerfile -t "$IMAGE"
@@ -83,7 +83,7 @@ jobs:
         run: |
             USERNAME="${{ secrets.DOCKER_USERNAME }}"
             IMAGE_NAME="${{ env.IMAGE_NAME }}"
-            TAG=13
+            TAG=14
             IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
             docker push "$IMAGE"
 
@@ -137,7 +137,7 @@ jobs:
         run: |
           USERNAME="${{ secrets.DOCKER_USERNAME }}"
           IMAGE_NAME="${{ env.IMAGE_NAME }}"
-          TAG=13
+          TAG=14
           IMAGE="$USERNAME/$IMAGE_NAME:$TAG"
           kubectl set image deployment/backstage \
           backstage=$IMAGE \
