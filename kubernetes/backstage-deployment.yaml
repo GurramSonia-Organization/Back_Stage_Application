@@ -33,9 +33,9 @@
 #           env:
 #              # 1. Base URLs (Matching your placeholders)
 #             - name: APP_BASE_URL_FRONTEND
-#               value: "https://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com"
+#               value: "https://a55a693a63c99433d8e57eb9a5e09f00-1463316766.us-east-1.elb.amazonaws.com "
 #             - name: APP_BASE_URL_BACKEND
-#               value: "https://ae9a3c2abec9e42c0abde4b73fa2bd42-451734798.us-east-1.elb.amazonaws.com"
+#               value: "https://a55a693a63c99433d8e57eb9a5e09f00-1463316766.us-east-1.elb.amazonaws.com "
 
 #               # 2. Config & Env Settings
 #             - name: APP_CONFIG_auth_environment
