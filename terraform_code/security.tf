@@ -38,4 +38,12 @@ resource "aws_security_group" "worker_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+  description = "Allow HTTP access to app on port 7007"
+  from_port   = 7007
+  to_port     = 7007
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]   # open to internet (use specific IP for security)
+}
 }
