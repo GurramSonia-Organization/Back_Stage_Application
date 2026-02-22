@@ -56,15 +56,15 @@ auth:
     # See https://backstage.io/docs/auth/guest/provider
     guest: {}
     github:
-      # production:
-      #   clientId: ${BACKSTAGE_CLIENT_ID}
-      #   clientSecret: ${BACKSTAGE_CLIENT_SECRET}
-      #   signIn:
-      #     resolvers:
-      #       # Matches the GitHub username with the Backstage user entity name.
-      #       # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
-      #       - resolver: usernameMatchingUserEntityName
-      #       #- resolver: emailMatchingUserEntityProfileEmai
+      production:
+        clientId: ${BACKSTAGE_CLIENT_ID}
+        clientSecret: ${BACKSTAGE_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            # Matches the GitHub username with the Backstage user entity name.
+            # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
+            - resolver: usernameMatchingUserEntityName
+            #- resolver: emailMatchingUserEntityProfileEmai
 
 # catalog:
 #   # Overrides the default list locations from app-config.yaml as these contain example data.
