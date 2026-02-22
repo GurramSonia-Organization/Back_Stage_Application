@@ -14,6 +14,9 @@ backend:
   #   keys:
   #     - secret: ${BACKEND_SECRET}
   baseUrl: http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+    upgrade-insecure-requests: false
   auth:
     dangerouslyDisableDefaultAuthPolicy: true # Move it here!
   #baseUrl: http://a2da9f3849a3a4892a0f6e277a3606bb-2142267926.us-east-1.elb.amazonaws.com

@@ -10,11 +10,15 @@ backend:
   # callers. When its value is "http://localhost:7007", it's strictly private
   # and can't be reached by others.
   baseUrl: http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+    upgrade-insecure-requests: false
   auth:
     dangerouslyDisableDefaultAuthPolicy: true # Move it here!
   # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
   listen: ':7007'
+  
   cors:
     origin: http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com
     #origin: http://a2da9f3849a3a4892a0f6e277a3606bb-2142267926.us-east-1.elb.amazonaws.com
@@ -52,15 +56,15 @@ auth:
     # See https://backstage.io/docs/auth/guest/provider
     guest: {}
     github:
-      production:
-        clientId: ${BACKSTAGE_CLIENT_ID}
-        clientSecret: ${BACKSTAGE_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            # Matches the GitHub username with the Backstage user entity name.
-            # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
-            - resolver: usernameMatchingUserEntityName
-            #- resolver: emailMatchingUserEntityProfileEmai
+      # production:
+      #   clientId: ${BACKSTAGE_CLIENT_ID}
+      #   clientSecret: ${BACKSTAGE_CLIENT_SECRET}
+      #   signIn:
+      #     resolvers:
+      #       # Matches the GitHub username with the Backstage user entity name.
+      #       # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
+      #       - resolver: usernameMatchingUserEntityName
+      #       #- resolver: emailMatchingUserEntityProfileEmai
 
 # catalog:
 #   # Overrides the default list locations from app-config.yaml as these contain example data.
