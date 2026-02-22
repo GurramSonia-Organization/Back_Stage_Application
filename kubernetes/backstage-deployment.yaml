@@ -95,7 +95,7 @@ spec:
     spec:
       containers:
         - name: backstage
-          image: soniagurramavari/backstage-production:4
+          image: soniagurramavari/backstage-production:18
           imagePullPolicy: Always
           ports:
             - name: http
@@ -108,10 +108,10 @@ spec:
                 name: backstage-secrets
           # 2. Individual environment variables (Ensure perfect indentation)
           env:
-            - name: APP_BASE_URL_FRONTEND
-              value: "http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com "
-            - name: APP_BASE_URL_BACKEND
-              value: "http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com"
+            # - name: APP_BASE_URL_FRONTEND
+            #   value: "http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com "
+            # - name: APP_BASE_URL_BACKEND
+            #   value: "http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com"
             - name: APP_CONFIG_auth_environment
               value: "production"
             - name: NODE_ENV
@@ -138,6 +138,20 @@ spec:
                 secretKeyRef:
                   name: backstage-secrets
                   key: BACKSTAGE_TOKEN
+
+            # - name: APP_BASE_URL_FRONTEND
+            #   value: "http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com"
+            # - name: APP_BASE_URL_BACKEND
+            #   value: "http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com"
+            # - name: APP_CONFIG_backend_cors_origin
+            #   value: "http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi" 
 
 #Uncomment if health checks are enabled in your app:
 #https://backstage.io/docs/plugins/observability#health-checks

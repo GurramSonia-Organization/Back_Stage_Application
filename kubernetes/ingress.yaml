@@ -7,7 +7,8 @@ metadata:
     # This tells AWS to create an Application Load Balancer
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
+    #alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/target-type: instance
     # This ensures the ALB can talk to your Backstage port 7007
     alb.ingress.kubernetes.io/healthcheck-path: /healthcheck
     alb.ingress.kubernetes.io/healthcheck-port: '7007'
