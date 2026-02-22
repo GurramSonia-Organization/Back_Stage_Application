@@ -15,7 +15,11 @@ backend:
   # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
   # all interfaces, the most permissive setting. The right value depends on your specific deployment.
   listen: ':7007'
-
+  cors:
+    origin: ${APP_BASE_URL_FRONTEND}
+    #origin: http://a2da9f3849a3a4892a0f6e277a3606bb-2142267926.us-east-1.elb.amazonaws.com
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
   # config options: https://node-postgres.com/apis/client
   database:
     client: pg
