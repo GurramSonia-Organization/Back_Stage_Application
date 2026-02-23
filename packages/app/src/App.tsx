@@ -2,7 +2,7 @@ import { Route } from 'react-router-dom';
 import { TechRadarPage } from '@backstage-community/plugin-tech-radar';
 import { HomepageCompositionRoot } from '@backstage/plugin-home';
 import { HomePage } from './components/home/HomePage';
-import { githubAuthApiRef } from '@backstage/core-plugin-api';
+//import { githubAuthApiRef } from '@backstage/core-plugin-api';
 import { apiDocsPlugin, ApiExplorerPage } from '@backstage/plugin-api-docs';
 import {
   CatalogEntityPage,
@@ -61,6 +61,7 @@ const app = createApp({
       catalogIndex: catalogPlugin.routes.catalogIndex,
     });
   },
+  // auto
   //  provider={{
   //       id: 'github-auth-provider',
   //       title: 'GitHub',
@@ -71,8 +72,7 @@ const app = createApp({
   SignInPage: props => (
     <SignInPage
       {...props}
-      auto
-     provider="guest"
+     providers={['guest']}
     />
   ),
 },
