@@ -4,16 +4,16 @@ apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
   #name: ${BACKSTAGE_USERNAME}
-  name: GurramSonia
+  #name: GurramSonia
  
-  #name: guest
-# spec:
-#   memberOf: [guests]
+  name: guest
 spec:
-  profile:
-    displayName: Sonia Gurram
-    email: gsoni7881772@gmail.com
   memberOf: [guests]
+# spec:
+#   profile:
+#     displayName: Sonia Gurram
+#     email: gsoni7881772@gmail.com
+#   memberOf: [guests]
 ---
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
 apiVersion: backstage.io/v1alpha1

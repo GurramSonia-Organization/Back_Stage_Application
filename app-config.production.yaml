@@ -55,16 +55,16 @@ auth:
   providers:
     # See https://backstage.io/docs/auth/guest/provider
     guest: {}
-    github:
-      production:
-        clientId: ${BACKSTAGE_CLIENT_ID}
-        clientSecret: ${BACKSTAGE_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            # Matches the GitHub username with the Backstage user entity name.
-            # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
-            - resolver: usernameMatchingUserEntityName
-            #- resolver: emailMatchingUserEntityProfileEmai
+    # github:
+    #   production:
+    #     clientId: ${BACKSTAGE_CLIENT_ID}
+    #     clientSecret: ${BACKSTAGE_CLIENT_SECRET}
+    #     signIn:
+    #       resolvers:
+    #         # Matches the GitHub username with the Backstage user entity name.
+    #         # See https://backstage.io/docs/auth/github/provider#resolvers for more resolvers.
+    #         - resolver: usernameMatchingUserEntityName
+    #         #- resolver: emailMatchingUserEntityProfileEmai
 
 # catalog:
 #   # Overrides the default list locations from app-config.yaml as these contain example data.
@@ -111,12 +111,12 @@ catalog:
       target: ./examples/org.yaml
       rules:
         - allow: [User, Group]
-  providers:
-    github:
-      gurram-provider:
-        organization: GurramSonia-Organization
-        catalogPath: /catalog-info.yaml
-        schedule:
-          frequency: { minutes: 30 }
-          timeout: { minutes: 3 }
+  # providers:
+  #   github:
+  #     gurram-provider:
+  #       organization: GurramSonia-Organization
+  #       catalogPath: /catalog-info.yaml
+  #       schedule:
+  #         frequency: { minutes: 30 }
+  #         timeout: { minutes: 3 }
 
