@@ -20,7 +20,7 @@ metadata:
   name: backstage-service
   namespace: backstage
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: backstage
   ports:
