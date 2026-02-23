@@ -1,7 +1,7 @@
 app:
   # Should be the same as backend.baseUrl when using the `app-backend` plugin.
   #baseUrl: http://localhost:7007
-  baseUrl: http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com
+  baseUrl: ${APP_BASE_URL_BACKEND}
 
 backend:
   # Note that the baseUrl should be the URL that the browser and other clients
@@ -9,7 +9,7 @@ backend:
   # reachable not just from within the backend host, but from all of your
   # callers. When its value is "http://localhost:7007", it's strictly private
   # and can't be reached by others.
-  baseUrl: http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com
+  baseUrl: ${APP_BASE_URL_BACKEND}
   csp:
     connect-src: ["'self'", 'http:', 'https:']
     upgrade-insecure-requests: false
@@ -20,7 +20,7 @@ backend:
   listen: ':7007'
   
   cors:
-    origin: http://k8s-backstag-backstag-704aa8e065-499123527.us-east-1.elb.amazonaws.com
+    origin: ${APP_BASE_URL_FRONTEND}
     #origin: http://a2da9f3849a3a4892a0f6e277a3606bb-2142267926.us-east-1.elb.amazonaws.com
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true

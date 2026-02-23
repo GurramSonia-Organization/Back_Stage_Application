@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: backstage-ingress-demo-app
+  name: backstage-ingress
   namespace: backstage
   annotations:
     # This tells AWS to create an Application Load Balancer
